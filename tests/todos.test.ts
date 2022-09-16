@@ -155,19 +155,6 @@ describe("DELETE /todos{id}", () => {
   });
 });
 
-const checkpointTwo =
-  parseInt(process.env.CHECKPOINT!) > 1 ? describe : describe.skip;
-checkpointTwo("POST /todos/random", () => {
-  it("should return a random Todo", async () => {
-    const res = await supertestRequest
-      .post("/api/todos/random")
-      .set("Accept", "application/json");
-    expect(res.status).toEqual(200);
-    expect(res.type).toEqual(expect.stringContaining("json"));
-    expect(isTodo(res.body)).toBe(true);
-  });
-});
-
 // Stop server after all tests are completed
 afterAll(async () => {
   await server.close();

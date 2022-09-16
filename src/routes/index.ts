@@ -1,11 +1,10 @@
 import { Router } from "express";
 import {
-    createTodo,
-    getAllTodos,
-    deleteTodoById,
-    getTodoById,
-    updateTodoById,
-    createRandomTodo
+  createTodo,
+  getAllTodos,
+  deleteTodoById,
+  getTodoById, 
+  updateTodoById
 } from "./methods";
 
 const forwardRouter = Router();
@@ -14,6 +13,5 @@ forwardRouter.get("/todos", getAllTodos);
 forwardRouter.get("/todos/:id", getTodoById);
 forwardRouter.put("/todos/:id", updateTodoById);
 forwardRouter.delete("/todos/:id", deleteTodoById);
-forwardRouter.post("/todos/random", createRandomTodo);
 
 export default forwardRouter;
