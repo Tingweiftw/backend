@@ -33,6 +33,7 @@ export async function createTodo(req: Request, res: Response) {
         id: v4(),
         description: newTaskDescription,
         done: false,
+        date: body.date ||= new Date()
     };
     todoList[newTodo.id] = newTodo;
     return res.status(200).json(newTodo);
@@ -41,6 +42,13 @@ export async function createTodo(req: Request, res: Response) {
 // Can mention unused request param
 export async function getAllTodos(_req: Request, res: Response) {
     return res.status(200).json(todoList);
+}
+
+export async function getTodosByDate(req: Request, res: Response) {
+    const date = req.body.date ||= new Date();
+    const todoArrays = Object.entries(todoList)
+    const todos = Object.entries(todoArrays.filter(([_, toDo])=>{toDo.date === date}))
+    return res.status(200).json(todos);
 }
 
 export async function deleteTodoById(req: Request, res: Response) {
@@ -78,7 +86,10 @@ export async function getTodoById(req: Request, res: Response) {
     }
 }
 
-export async function createRandomTodo(_req: Request, res: Response) {
+export async function createRandomTodo(req: Request, res: Response) {
+    const abortController = new AbortController();
+    setTimeout(() => abortController.abort(), 3000);
+
     try {
         const responseJson = await fetch("http://www.boredapi.com/api/activity")
             .then(apiResponse => apiResponse.json());
@@ -87,6 +98,7 @@ export async function createRandomTodo(_req: Request, res: Response) {
             id: v4(),
             description: randomActivity,
             done: false,
+            date: req.body.date ||= new Date()
         };
         todoList[randomTodo.id] = randomTodo;
         return res.status(200).json(randomTodo);
